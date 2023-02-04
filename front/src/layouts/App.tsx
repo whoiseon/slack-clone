@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
+import { Routes, Route, Navigate } from "react-router-dom";
 
-function App() {
+const LogIn = lazy(() => import('pages/LogIn'));
+const SignUp = lazy(() => import('pages/SignUp'));
+
+const App = () => {
   return (
-    <div>Hello React</div>
+    <Suspense fallback={<div>로딩중...</div>}>
+      <Routes>
+        <Route path="/" element={<Navigate replace to="/login" />} />
+        <Route path="/login" element={<LogIn />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
+    </Suspense>
   );
 }
 
