@@ -2,28 +2,44 @@ import { Header, Form, Label, Button, Input, LinkContainer, Error } from 'pages/
 import { Link } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import useInput from 'hooks/useInput';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import fetcher from 'utils/fetcher';
 
 const LogIn = () => {
+  const queryClient = useQueryClient();
+
+  const { isLoading, isSuccess, status, isError, data, error } = useQuery('user', () =>
+    fetcher({ queryKey: '/api/users' })
+  );
+  const mutation = useMutation<any, any, { email: string; password: string }>(
+    'user',
+    (data) =>
+      axios.post('http://localhost:3095/api/users/login', data, {
+        withCredentials: true,
+      })
+        .then((response) => response.data),
+    {
+      onMutate() {
+        setLogInError(false);
+      },
+      onSuccess() {
+        queryClient.refetchQueries('user');
+      },
+      onError(error) {
+        setLogInError(error.response?.data?.code === 401);
+      }
+    }
+  );
+
   const [logInError, setLogInError] = useState(false);
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
-  const onSubmit = useCallback(
-    (e: any) => {
-      e.preventDefault();
-      axios.post('http://localhost:3095/api/users/login', {
-        email,
-        password
-      })
-        .then(() => {
 
-        })
-        .catch((error) => {
-          setLogInError(error.response?.data?.statusCode === 401);
-        });
-    },
-    [email, password],
-  );
+  const onSubmit = useCallback((e: any) => {
+    e.preventDefault();
+    mutation.mutate({ email, password });
+  }, [email, password, mutation]);
 
   return (
     <div id="container">
