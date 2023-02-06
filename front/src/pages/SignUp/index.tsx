@@ -50,7 +50,7 @@ const SignUp = () => {
         })
         .finally(() => {});
     }
-  }, [email, nickname, password, passwordCheck, mismatchError]);
+  }, [email, nickname, password, mismatchError]);
 
   if (userData === undefined) {
     return <div>로딩중...</div>

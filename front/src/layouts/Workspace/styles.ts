@@ -24,9 +24,12 @@ export const ProfileImg = styled.img`
 
 export const ProfileModal = styled.div`
   display: flex;
+  align-items: center;
   padding: 20px;
   & img {
     display: flex;
+    width: 28px;
+    height: 28px;
   }
   & > div {
     display: flex;
@@ -46,13 +49,19 @@ export const ProfileModal = styled.div`
 export const LogOutButton = styled.button`
   border: none;
   width: 100%;
-  border-top: 1px solid rgb(29, 28, 29);
+  border-top: 1px solid ${colors.border.channel};
   background: transparent;
+  color: ${colors.text.white};
   display: block;
-  height: 33px;
-  padding: 5px 20px 5px;
+  padding: 12px 20px;
   outline: none;
   cursor: pointer;
+  text-align: left;
+  
+  &:hover {
+    background: ${colors.button.primary};
+    color: #FFFFFF;
+  }
 `;
 
 export const WorkspaceWrapper = styled.div`
@@ -138,6 +147,10 @@ export const WorkspaceName = styled.button`
   margin: 0;
   color: white;
   cursor: pointer;
+  
+  &:hover {
+    background-color: ${colors.background.channel.sideNavHover};
+  }
 `;
 
 export const MenuScroll = styled.div`

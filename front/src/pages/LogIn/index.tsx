@@ -5,12 +5,13 @@ import useInput from 'hooks/useInput';
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import fetcher from 'utils/fetcher';
+import { IUser } from 'typings/db';
 
 const LogIn = () => {
   const queryClient = useQueryClient();
 
   const { data: userData } = useQuery('user', () => fetcher({ queryKey: '/api/users' }));
-  const mutation = useMutation<any, any, { email: string; password: string }>(
+  const mutation = useMutation<IUser, any, { email: string; password: string }>(
     'user',
     (data) =>
       axios.post('http://localhost:3095/api/users/login', data, {
