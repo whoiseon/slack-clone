@@ -1,17 +1,15 @@
 import { Header, Form, Label, Button, Input, LinkContainer, Error } from 'pages/SignUp/styles';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { useCallback, useState } from 'react';
 import useInput from 'hooks/useInput';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import fetcher from 'utils/fetcher';
 
 const LogIn = () => {
   const queryClient = useQueryClient();
 
-  const { isLoading, isSuccess, status, isError, data, error } = useQuery('user', () =>
-    fetcher({ queryKey: '/api/users' })
-  );
+  const { data: userData } = useQuery('user', () => fetcher({ queryKey: '/api/users' }));
   const mutation = useMutation<any, any, { email: string; password: string }>(
     'user',
     (data) =>
@@ -41,9 +39,17 @@ const LogIn = () => {
     mutation.mutate({ email, password });
   }, [email, password, mutation]);
 
+  if (userData === undefined) {
+    return <div>로딩중...</div>
+  }
+
+  if (userData) {
+    return <Navigate to="/workspace/channel" />
+  }
+
   return (
     <div id="container">
-      <Header>Mucscord</Header>
+      <Header>Mucslack</Header>
       <Form onSubmit={onSubmit}>
         <Label id="email-label">
           <span>이메일 주소</span>

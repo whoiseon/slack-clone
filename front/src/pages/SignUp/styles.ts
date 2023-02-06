@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
+import { colors } from 'styles/variables';
 
 export const Header = styled.header`
   text-align: center;
   font-family: Slack-Larsseit, Helvetica Neue, Helvetica, Segoe UI, Tahoma, Arial, sans-serif;
   font-weight: 700;
-  font-size: 48px;
+  font-size: 26px;
   line-height: 46px;
   letter-spacing: -0.75px;
   margin-top: 50px;
@@ -38,12 +39,10 @@ export const Input = styled.input`
   box-sizing: border-box;
   margin: 0 0 20px;
   width: 100%;
-  color: rgba(var(--sk_primary_foreground, 29, 28, 29), 1);
-  background-color: rgba(var(--sk_primary_background, 255, 255, 255), 1);
-  padding: 12px;
+  color: ${colors.text.white};
+  background: ${colors.background.input};
+  padding: 11px 12px 13px;
   height: 44px;
-  padding-top: 11px;
-  padding-bottom: 13px;
   font-size: 18px;
   line-height: 1.33333333;
   &:focus {
@@ -57,7 +56,7 @@ export const Button = styled.button`
   width: 100%;
   max-width: 100%;
   color: #fff;
-  background-color: #4a154b;
+  background-color: ${colors.button.primary};
   border: none;
   font-size: 18px;
   font-weight: 900;
@@ -71,7 +70,7 @@ export const Button = styled.button`
   border-radius: 4px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   &:hover {
-    background-color: rgba(74, 21, 75, 0.9);
+    background-color: ${colors.button.primaryHover};
     border: none;
   }
   &:focus {
@@ -94,12 +93,11 @@ export const Success = styled.div`
 
 export const LinkContainer = styled.p`
   font-size: 13px;
-  color: #616061;
   margin: 0 auto 8px;
   width: 400px;
   max-width: 400px;
   & a {
-    color: #1264a3;
+    color: #1164a3;
     text-decoration: none;
     font-weight: 700;
     &:hover {

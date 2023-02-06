@@ -1,10 +1,16 @@
 import { Header, Form, Label, Button, Input, LinkContainer, Error, Success } from './styles';
 import { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import useInput from 'hooks/useInput';
 import axios from 'axios';
+import { useQuery } from 'react-query';
+import fetcher from 'utils/fetcher';
 
 const SignUp = () => {
+  const { data: userData } = useQuery('user', () =>
+    fetcher({ queryKey: '/api/users' })
+  );
+
   const [email, onChangeEmail] = useInput('');
   const [nickname, onChangeNickname] = useInput('');
   const [password, , setPassword] = useInput('');
@@ -26,7 +32,6 @@ const SignUp = () => {
 
   const onSubmit = useCallback((e: any) => {
     e.preventDefault();
-    console.log(email, nickname, password, passwordCheck);
 
     if(!mismatchError && nickname) {
       console.log('서버로 회원가입하기');
@@ -38,20 +43,26 @@ const SignUp = () => {
         password,
       })
         .then((response) => {
-          console.log(response);
           setSignUpSuccess(true);
         })
         .catch((error) => {
-          console.log(error.response);
           setSignUpError(error.response.data);
         })
         .finally(() => {});
     }
   }, [email, nickname, password, passwordCheck, mismatchError]);
 
+  if (userData === undefined) {
+    return <div>로딩중...</div>
+  }
+
+  if (userData) {
+    return <Navigate to="/workspace/channel" />
+  }
+
   return (
     <div id="container">
-      <Header>Mucscord</Header>
+      <Header>Mucslack</Header>
       <Form onSubmit={onSubmit}>
         <Label id="email-label">
           <span>이메일 주소</span>
