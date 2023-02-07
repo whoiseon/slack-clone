@@ -14,7 +14,7 @@ const LogIn = () => {
   const mutation = useMutation<IUser, any, { email: string; password: string }>(
     'user',
     (data) =>
-      axios.post('http://localhost:3095/api/users/login', data, {
+      axios.post('/api/users/login', data, {
         withCredentials: true,
       })
         .then((response) => response.data),
@@ -45,7 +45,7 @@ const LogIn = () => {
   }
 
   if (userData) {
-    return <Navigate to="/workspace/channel" />
+    return <Navigate to="/workspace/sleact/channel/일반" />
   }
 
   return (

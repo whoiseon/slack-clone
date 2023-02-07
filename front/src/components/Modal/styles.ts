@@ -36,5 +36,10 @@ export const CloseModalButton = styled.button`
   border: none;
   font-size: 30px;
   cursor: pointer;
-  color: #FFFFFF
+  color: #FFFFFF;
+  border-radius: 6px;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
 `;

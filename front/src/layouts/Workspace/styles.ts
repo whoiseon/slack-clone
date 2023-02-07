@@ -87,18 +87,32 @@ export const Channels = styled.nav`
   display: inline-flex;
   flex-direction: column;
   background: ${colors.background.channel.sideNav};
+  border-right: 1px solid ${colors.border.channel};
   color: rgb(188, 171, 188);
   vertical-align: top;
   & a {
-    padding-left: 36px;
+    padding-left: 16px;
     color: inherit;
     text-decoration: none;
     height: 28px;
     line-height: 28px;
     display: flex;
     align-items: center;
+    &.channels {
+      font-weight: bold;
+    }
     &.selected {
       color: white;
+    }
+    &:hover {
+      background-color: ${colors.background.channel.sideNavHover};
+    }
+    
+    span {
+      i {
+        font-style: normal;
+        margin-right: 10px;
+      }
     }
   }
   & .bold {
@@ -165,12 +179,19 @@ export const WorkspaceModal = styled.div`
   }
   & > button {
     width: 100%;
-    height: 28px;
-    padding: 4px;
+    padding: 10px 20px;
+    text-align: left;
     border: none;
     background: transparent;
-    border-top: 1px solid rgb(28, 29, 28);
+    border-top: 1px solid ${colors.border.channel};
     cursor: pointer;
+    color: ${colors.text.white};
+
+    &:hover {
+      background: ${colors.button.primary};
+      color: #FFFFFF;
+    }
+    
     &:last-of-type {
       border-bottom: 1px solid rgb(28, 29, 28);
     }

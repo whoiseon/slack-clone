@@ -11,6 +11,11 @@ const Modal = ({ show, children, onCloseModal }: Props) => {
   const stopPropagation = useCallback((e: any) => {
     e.stopPropagation();
   }, []);
+
+  if (!show) {
+    return null;
+  }
+
   return (
     <CreateModal onClick={onCloseModal}>
       <div onClick={stopPropagation}>

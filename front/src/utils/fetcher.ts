@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const fetcher = async ({ queryKey }: { queryKey: string }) => {
-  const response = await axios.get(`http://localhost:3095${queryKey}`, {
+  const response = await axios.get(queryKey, {
     withCredentials: true,
   });
 
