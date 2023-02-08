@@ -6,6 +6,7 @@ import { useQuery } from 'react-query';
 import { useParams } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import useSocket from 'hooks/useSocket';
+import regexifyString from 'regexify-string';
 
 const DMList: FC = () => {
   const { workspace } = useParams<{ workspace?: string }>();

@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { colors } from 'styles/variables';
 
 export const ChatZone = styled.div`
   width: 100%;
@@ -8,7 +9,7 @@ export const ChatZone = styled.div`
 
 export const Section = styled.section`
   margin-top: 20px;
-  border-top: 1px solid #eee;
+  border-top: 1px solid ${colors.border.channel};
 `;
 
 export const StickyHeader = styled.div`
@@ -23,15 +24,16 @@ export const StickyHeader = styled.div`
     font-size: 13px;
     height: 28px;
     line-height: 27px;
-    padding: 0 16px;
+    padding: 0 18px;
     z-index: 2;
     --saf-0: rgba(var(--sk_foreground_low, 29, 28, 29), 0.13);
     box-shadow: 0 0 0 1px var(--saf-0), 0 1px 3px 0 rgba(0, 0, 0, 0.08);
     border-radius: 24px;
     position: relative;
     top: -13px;
-    background: white;
-    border: none;
+    background: ${colors.background.primary};
+    border: 1px solid ${colors.border.channel};
+    color: ${colors.text.white};
     outline: none;
   }
 `;

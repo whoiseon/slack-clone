@@ -1,10 +1,10 @@
 import { ChatArea, EachMention, Form, MentionsTextarea, SendButton, Toolbox } from 'components/ChatBox/styles';
 import { ReactNode, useCallback, useEffect, useRef } from 'react';
 
-import TextareaAutosize from "react-textarea-autosize";
+import autosize from 'autosize';
 import { Mention, SuggestionDataItem } from 'react-mentions';
 import { useQuery, useQueryClient } from 'react-query';
-import { IChannel, IUser } from 'typings/db';
+import { IUser } from 'typings/db';
 import fetcher from 'utils/fetcher';
 import { useParams } from 'react-router';
 import * as React from 'react';
@@ -18,8 +18,6 @@ interface Props {
 }
 
 const ChatBox = ({ chat, onChangeChat, onSubmitForm, placeholder }: Props) => {
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-
   const { workspace, channel } = useParams<{ workspace: string, channel: string }>();
 
   const queryClient = useQueryClient();
@@ -33,6 +31,13 @@ const ChatBox = ({ chat, onChangeChat, onSubmitForm, placeholder }: Props) => {
       enabled: !!userData,
     }
   );
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    if (textareaRef.current) {
+      autosize(textareaRef.current);
+    }
+  }, []);
 
   const onKeydownChat = useCallback((e: any) => {
     if (e.key === 'Enter') {
@@ -53,7 +58,10 @@ const ChatBox = ({ chat, onChangeChat, onSubmitForm, placeholder }: Props) => {
     if (!memberData) return;
     return (
       <EachMention focus={focused}>
-        <img src={gravatar.url(memberData[index].email, { s: '20px', d: 'retro' })} alt={memberData[index].nickname} />
+        <img
+          src={gravatar.url(memberData[index].email, { s: '20px', d: 'retro' })}
+          alt={memberData[index].nickname}
+        />
         <span>{ highlightedDisplay }</span>
       </EachMention>
     )
@@ -68,22 +76,20 @@ const ChatBox = ({ chat, onChangeChat, onSubmitForm, placeholder }: Props) => {
   return (
     <ChatArea>
       <Form onSubmit={onSubmitForm}>
-        <MentionsTextarea>
-          <TextareaAutosize
-            ref={textareaRef}
-            placeholder={placeholder}
-            value={chat}
-            onChange={onChangeChat}
-            onKeyDown={onKeydownChat}
-            rows={1}
-          >
-            <Mention
-              appendSpaceOnAdd
-              trigger="@"
-              data={memberData?.map((v) => ({ id: v.id, display: v.nickname })) || []}
-              renderSuggestion={renderSuggestion}
-            />
-          </TextareaAutosize>
+        <MentionsTextarea
+          placeholder={placeholder}
+          value={chat}
+          onChange={onChangeChat}
+          onKeyPress={onKeydownChat}
+          inputRef={textareaRef}
+          allowSuggestionsAboveCursor
+        >
+          <Mention
+            appendSpaceOnAdd
+            trigger="@"
+            data={memberData?.map((v) => ({ id: v.id, display: v.nickname })) || []}
+            renderSuggestion={renderSuggestion}
+          />
         </MentionsTextarea>
         <Toolbox>
           <SendButton

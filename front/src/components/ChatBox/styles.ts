@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { colors } from 'styles/variables';
-// import { MentionsInput } from 'react-mentions';
+import { MentionsInput } from 'react-mentions';
 
 export const ChatArea = styled.div`
   display: flex;
@@ -17,26 +17,23 @@ export const Form = styled.form`
   background-color: ${colors.background.chat};
 `;
 
-export const MentionsTextarea = styled.div`
+export const MentionsTextarea = styled(MentionsInput)`
+  font-family: Slack-Lato, appleLogo, sans-serif;
   font-size: 15px;
   padding: 8px 9px;
   width: 100%;
-  & strong {
-    background: skyblue;
-  }
   & textarea {
-    font-family: 'Apple SD Gothic Neo', 'monospace', sans-serif;
-    font-size: 15px;
-    width: 100%;
-    height: 38px;
+    height: 44px;
     padding: 9px 10px !important;
     outline: none !important;
     border-radius: 4px !important;
     resize: none !important;
     line-height: 22px;
     border: none;
-    background-color: ${colors.background.chat};
     color: ${colors.text.white};
+  }
+  & strong {
+    background: skyblue;
   }
   & ul {
     border: 1px solid lightgray;
@@ -76,11 +73,11 @@ export const SendButton = styled.button`
 
 export const EachMention = styled.button<{ focus: boolean }>`
   padding: 4px 20px;
-  background: transparent;
+  background-color: ${colors.background.primary};
   border: none;
   display: flex;
   align-items: center;
-  color: rgb(28, 29, 28);
+  color: ${colors.text.white};
   width: 100%;
   & img {
     margin-right: 5px;
@@ -88,7 +85,7 @@ export const EachMention = styled.button<{ focus: boolean }>`
   ${({ focus }) =>
   focus &&
   `
-    background: #1264a3;
+    background: ${colors.button.primaryHover};
     color: white;
   `};
 `;
