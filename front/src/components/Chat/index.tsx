@@ -1,6 +1,6 @@
 import { ChatWrapper } from 'components/Chat/styles';
 import gravatar from 'gravatar';
-import { IDM } from 'typings/db';
+import { IChat, IDM } from 'typings/db';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import regexifyString from 'regexify-string';
@@ -9,12 +9,12 @@ import { useParams } from 'react-router';
 import { memo, useMemo } from 'react';
 
 interface Props {
-  data: IDM;
+  data: IDM | IChat;
 }
 
 const Chat = ({ data }: Props) => {
   const { workspace } = useParams<{ workspace: string }>();
-  const user = data.Sender;
+  const user = 'Sender' in data ? data.Sender : data.User;
 
   // @[테스트](1)
   // \d 숫자,

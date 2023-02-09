@@ -11,11 +11,14 @@ import axios, { AxiosError } from 'axios';
 import { IDM } from 'typings/db';
 import makeSection from 'utils/makeSection';
 import { Scrollbars } from 'react-custom-scrollbars';
+import useSocket from 'hooks/useSocket';
 
 const DirectMessage = () => {
   const [chat, onChangeChat, setChat] = useInput('');
 
   const { workspace, id } = useParams<{ workspace: string, id: string }>()
+
+  const [socket] = useSocket(workspace);
 
   const queryClient = useQueryClient();
   const { data: userData } = useQuery(
@@ -92,6 +95,36 @@ const DirectMessage = () => {
     },
     [chat, chatData, mutation],
   );
+
+  const onMessage = useCallback((data: IDM) => {
+    if (data.SenderId === Number(id) && myData.id !== Number(id)) {
+      queryClient.setQueryData<InfiniteData<IDM[]>>(['workspace', workspace, 'dm', id, 'chat'], (prev) => {
+        const newPages = prev?.pages.slice() || [];
+        newPages[0].unshift(data);
+
+        return {
+          pageParams: prev?.pageParams || [],
+          pages: newPages
+        };
+      });
+      if (scrollbarRef.current) {
+        if (scrollbarRef.current.getScrollHeight() < (scrollbarRef.current.getClientHeight() + scrollbarRef.current.getScrollTop() + 150)) {
+          console.log('scrollToBottom!', scrollbarRef.current?.getValues());
+          setTimeout(() => {
+            scrollbarRef.current?.scrollToBottom();
+          }, 50)
+        }
+      }
+    }
+  }, [workspace, id, myData.id, queryClient]);
+
+  useEffect(() => {
+    socket?.on('dm', onMessage);
+
+    return () => {
+      socket?.off('dm', onMessage);
+    }
+  }, [socket, id, myData]);
 
   useEffect(() => { // 로딩시 스크롤바 최 하단
     if (chatData?.pages.length === 1) {
